@@ -1,20 +1,23 @@
 import { BarChart3, Users, Car, FileText, AlertCircle, DollarSign, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link, useLocation } from "react-router-dom";
 
 const mainMenuItems = [
-  { icon: BarChart3, label: "Dashboard", active: true },
-  { icon: Users, label: "Associados" },
-  { icon: Car, label: "Veículos" },
-  { icon: FileText, label: "Contratos" },
-  { icon: AlertCircle, label: "Sinistros" },
-  { icon: DollarSign, label: "Financeiro" },
+  { icon: BarChart3, label: "Dashboard", path: "/" },
+  { icon: Users, label: "Associados", path: "/associados" },
+  { icon: Car, label: "Veículos", path: "/veiculos" },
+  { icon: FileText, label: "Contratos", path: "/contratos" },
+  { icon: AlertCircle, label: "Sinistros", path: "/sinistros" },
+  { icon: DollarSign, label: "Financeiro", path: "/financeiro" },
 ];
 
 const systemMenuItems = [
-  { icon: Settings, label: "Configurações" },
+  { icon: Settings, label: "Configurações", path: "/configuracoes" },
 ];
 
 const DashboardSidebar = () => {
+  const location = useLocation();
+  
   return (
     <aside className="bg-sidebar w-64 min-h-screen shadow-elevated flex flex-col py-6">
       {/* Logo */}
@@ -38,20 +41,24 @@ const DashboardSidebar = () => {
           </h3>
         </div>
         <nav className="space-y-1 px-4">
-          {mainMenuItems.map((item, index) => (
-            <button
-              key={index}
-              className={cn(
-                "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-left",
-                item.active
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              )}
-            >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
-              <span className="text-sm font-medium">{item.label}</span>
-            </button>
-          ))}
+          {mainMenuItems.map((item, index) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={index}
+                to={item.path}
+                className={cn(
+                  "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-left",
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                )}
+              >
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                <span className="text-sm font-medium">{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
       </div>
 
@@ -63,15 +70,24 @@ const DashboardSidebar = () => {
           </h3>
         </div>
         <nav className="space-y-1 px-4">
-          {systemMenuItems.map((item, index) => (
-            <button
-              key={index}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-left text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-            >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
-              <span className="text-sm font-medium">{item.label}</span>
-            </button>
-          ))}
+          {systemMenuItems.map((item, index) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={index}
+                to={item.path}
+                className={cn(
+                  "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-left",
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                )}
+              >
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                <span className="text-sm font-medium">{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </aside>

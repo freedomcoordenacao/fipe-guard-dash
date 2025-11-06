@@ -1,5 +1,3 @@
-import DashboardHeader from "@/components/DashboardHeader";
-import DashboardSidebar from "@/components/DashboardSidebar";
 import KPICard from "@/components/KPICard";
 import ContractsChart from "@/components/ContractsChart";
 import RevenueChart from "@/components/RevenueChart";
@@ -8,13 +6,7 @@ import { Users, Car, FileText, AlertCircle } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen bg-background">
-      <DashboardSidebar />
-      
-      <div className="flex-1">
-        <DashboardHeader />
-        
-        <main className="container mx-auto px-6 py-8">
+    <main className="container mx-auto px-6 py-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
             <p className="text-muted-foreground">Visão geral da sua operação de proteção veicular</p>
@@ -62,11 +54,9 @@ const Index = () => {
             <RevenueChart />
           </div>
 
-          {/* Recent Contracts Table */}
-          <RecentContractsTable />
-        </main>
-      </div>
-    </div>
+      {/* Recent Contracts Table */}
+      <RecentContractsTable />
+    </main>
   );
 };
 
