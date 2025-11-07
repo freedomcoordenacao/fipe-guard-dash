@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card";
 import KPICard from "@/components/KPICard";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DollarSign, TrendingUp, TrendingDown, CreditCard } from "lucide-react";
+import RevenueChart from "@/components/RevenueChart";
+import ExpensesChart from "@/components/ExpensesChart";
 
 const transactionsData = [
   { data: "15/06/2024", descricao: "Mensalidade - João Silva", tipo: "Receita", valor: "R$ 250,00" },
@@ -49,6 +51,11 @@ const Financeiro = () => {
           iconBgColor="bg-warning/10"
           iconColor="text-warning"
         />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <RevenueChart />
+        <ExpensesChart />
       </div>
 
       <Card className="shadow-card">
