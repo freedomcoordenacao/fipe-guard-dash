@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Car, Shield, AlertTriangle, Plus } from "lucide-react";
 import KPICard from "@/components/KPICard";
 import VeiculosProtegidosChart from "@/components/VeiculosProtegidosChart";
+import VeiculosStatusChart from "@/components/VeiculosStatusChart";
 import { useToast } from "@/hooks/use-toast";
 
 const sampleData = [
@@ -72,27 +73,7 @@ const Veiculos = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <VeiculosProtegidosChart />
-          <Card className="shadow-card">
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-foreground mb-4">Distribuição por Status</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-success"></div>
-                    <span className="text-sm text-muted-foreground">Ativos</span>
-                  </div>
-                  <span className="text-sm font-semibold">93.6%</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-warning"></div>
-                    <span className="text-sm text-muted-foreground">Pendentes</span>
-                  </div>
-                  <span className="text-sm font-semibold">6.4%</span>
-                </div>
-              </div>
-            </div>
-          </Card>
+          <VeiculosStatusChart />
         </div>
 
         <Card className="shadow-card">
