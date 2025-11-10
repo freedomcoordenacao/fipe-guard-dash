@@ -37,7 +37,15 @@ const Associados = () => {
       title="Associados"
       description="Gestão completa de associados"
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="space-y-6">
+        <div className="flex justify-end">
+          <Button onClick={handleNovoAssociado} className="gap-2">
+            <Plus className="w-4 h-4" />
+            Novo Associado
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KPICard
           icon={Users}
           value="358"
@@ -62,16 +70,16 @@ const Associados = () => {
           iconBgColor="bg-success/10"
           iconColor="text-success"
         />
-      </div>
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <AssociadosChart />
-        <VeiculosProtegidosChart />
-      </div>
-      <Card className="shadow-card">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex-1 max-w-md">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <AssociadosChart />
+          <VeiculosProtegidosChart />
+        </div>
+
+        <Card className="shadow-card">
+          <div className="p-6">
+            <div className="mb-6">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input 
@@ -80,11 +88,6 @@ const Associados = () => {
                 />
               </div>
             </div>
-            <Button onClick={handleNovoAssociado} className="gap-2">
-              <Plus className="w-4 h-4" />
-              Novo Associado
-            </Button>
-          </div>
 
           <div className="rounded-lg border border-border overflow-hidden">
             <Table>
@@ -135,9 +138,10 @@ const Associados = () => {
                 ))}
               </TableBody>
             </Table>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </PageLayout>
   );
 };
