@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import KPICard from "@/components/KPICard";
 import ContractsChart from "@/components/ContractsChart";
 import RevenueChart from "@/components/RevenueChart";
-import RecentContractsTable from "@/components/RecentContractsTable";
+import ExpensesChart from "@/components/ExpensesChart";
+import AssociadosChart from "@/components/AssociadosChart";
+import VeiculosProtegidosChart from "@/components/VeiculosProtegidosChart";
+import ContratosStatusChart from "@/components/ContratosStatusChart";
+import SinistrosStatusChart from "@/components/SinistrosStatusChart";
 import { Users, Car, FileText, AlertCircle, Database, Tag, CheckCircle } from "lucide-react";
 import { parseFipeData, calculateFipeStats, formatNumber, FipeStats } from "@/utils/fipeDataProcessor";
 
@@ -102,8 +106,19 @@ const Index = () => {
             <RevenueChart />
           </div>
 
-      {/* Recent Contracts Table */}
-      <RecentContractsTable />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <ExpensesChart />
+            <AssociadosChart />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <VeiculosProtegidosChart />
+            <ContratosStatusChart />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <SinistrosStatusChart />
+          </div>
     </main>
   );
 };
