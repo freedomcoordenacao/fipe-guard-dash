@@ -8,6 +8,8 @@ import KPICard from "@/components/KPICard";
 import AssociadosChart from "@/components/AssociadosChart";
 import VeiculosProtegidosChart from "@/components/VeiculosProtegidosChart";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import AssociadoFormDialog from "@/components/AssociadoFormDialog";
 
 const sampleData = [
   { id: "001", nome: "João Silva", cpf: "123.456.789-00", email: "joao.silva@email.com", telefone: "(11) 98765-4321", veiculos: 2, status: "Ativo" },
@@ -17,11 +19,13 @@ const sampleData = [
 
 const Associados = () => {
   const { toast } = useToast();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleNovoAssociado = () => {
+  const handleNovoAssociado = (data: any) => {
+    console.log("Novo associado:", data);
     toast({
-      title: "Novo Associado",
-      description: "Funcionalidade será implementada",
+      title: "Associado cadastrado",
+      description: "Associado cadastrado com sucesso",
     });
   };
 
@@ -48,11 +52,17 @@ const Associados = () => {
     >
       <div className="space-y-6">
         <div className="flex justify-end">
-          <Button onClick={handleNovoAssociado} className="gap-2">
+          <Button onClick={() => setDialogOpen(true)} className="gap-2">
             <Plus className="w-4 h-4" />
             Novo Associado
           </Button>
         </div>
+        
+        <AssociadoFormDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onSubmit={handleNovoAssociado}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KPICard

@@ -9,6 +9,8 @@ import KPICard from "@/components/KPICard";
 import VeiculosProtegidosChart from "@/components/VeiculosProtegidosChart";
 import VeiculosStatusChart from "@/components/VeiculosStatusChart";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import VeiculoFormDialog from "@/components/VeiculoFormDialog";
 
 const sampleData = [
   { placa: "ABC-1234", marca: "Honda", modelo: "Civic", ano: "2020", fipe: "R$ 85.000", associado: "João Silva", status: "Ativo" },
@@ -18,11 +20,13 @@ const sampleData = [
 
 const Veiculos = () => {
   const { toast } = useToast();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleNovoVeiculo = () => {
+  const handleNovoVeiculo = (data: any) => {
+    console.log("Novo veículo:", data);
     toast({
-      title: "Novo Veículo",
-      description: "Funcionalidade de cadastro será implementada",
+      title: "Veículo cadastrado",
+      description: "Veículo cadastrado com sucesso",
     });
   };
 
@@ -49,11 +53,17 @@ const Veiculos = () => {
     >
       <div className="space-y-6">
         <div className="flex justify-end">
-          <Button onClick={handleNovoVeiculo} className="gap-2">
+          <Button onClick={() => setDialogOpen(true)} className="gap-2">
             <Plus className="w-4 h-4" />
             Novo Veículo
           </Button>
         </div>
+        
+        <VeiculoFormDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onSubmit={handleNovoVeiculo}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <KPICard

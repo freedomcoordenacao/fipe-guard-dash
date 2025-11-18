@@ -9,6 +9,8 @@ import KPICard from "@/components/KPICard";
 import SinistrosStatusChart from "@/components/SinistrosStatusChart";
 import SinistrosTipoChart from "@/components/SinistrosTipoChart";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import SinistroFormDialog from "@/components/SinistroFormDialog";
 
 const sampleData = [
   { numero: "SIN-2024-001", associado: "João Silva", veiculo: "Honda Civic 2020", tipo: "Colisão", valor: "R$ 5.500,00", status: "Em Análise", data: "10/06/2024" },
@@ -18,11 +20,13 @@ const sampleData = [
 
 const Sinistros = () => {
   const { toast } = useToast();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleNewSinistro = () => {
+  const handleNewSinistro = (data: any) => {
+    console.log("Novo sinistro:", data);
     toast({
-      title: "Novo Sinistro",
-      description: "Funcionalidade será implementada",
+      title: "Sinistro cadastrado",
+      description: "Sinistro cadastrado com sucesso",
     });
   };
 
@@ -48,11 +52,17 @@ const Sinistros = () => {
       onImportData={handleImportData}
     >
       <div className="flex justify-end mb-6">
-        <Button onClick={handleNewSinistro} className="gap-2">
+        <Button onClick={() => setDialogOpen(true)} className="gap-2">
           <Plus className="w-4 h-4" />
           Novo Sinistro
         </Button>
       </div>
+      
+      <SinistroFormDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onSubmit={handleNewSinistro}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <KPICard

@@ -6,6 +6,11 @@ import { DollarSign, TrendingUp, TrendingDown, CreditCard } from "lucide-react";
 import RevenueChart from "@/components/RevenueChart";
 import ExpensesChart from "@/components/ExpensesChart";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import TransacaoFormDialog from "@/components/TransacaoFormDialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search, Plus } from "lucide-react";
 
 const transactionsData = [
   { data: "15/06/2024", descricao: "Mensalidade - João Silva", tipo: "Receita", valor: "R$ 250,00" },
@@ -16,6 +21,22 @@ const transactionsData = [
 
 const Financeiro = () => {
   const { toast } = useToast();
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleNovaTransacao = (data: any) => {
+    console.log("Nova transação:", data);
+    toast({
+      title: "Transação cadastrada",
+      description: "Transação cadastrada com sucesso",
+    });
+  };
+
+  const handleVerDetalhes = (descricao: string) => {
+    toast({
+      title: "Detalhes da Transação",
+      description: `Visualizando detalhes: ${descricao}`,
+    });
+  };
 
   const handleImportData = (data: any[]) => {
     console.log("Dados financeiros importados:", data);
@@ -31,7 +52,21 @@ const Financeiro = () => {
       description="Gestão financeira e fluxo de caixa"
       onImportData={handleImportData}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="space-y-6">
+        <div className="flex justify-end">
+          <Button onClick={() => setDialogOpen(true)} className="gap-2">
+            <Plus className="w-4 h-4" />
+            Novo Dado Financeiro
+          </Button>
+        </div>
+
+        <TransacaoFormDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onSubmit={handleNovaTransacao}
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard
           icon={DollarSign}
           value="R$ 328.450"
@@ -63,18 +98,28 @@ const Financeiro = () => {
           iconBgColor="bg-warning/10"
           iconColor="text-warning"
         />
-      </div>
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <RevenueChart />
-        <ExpensesChart />
-      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <RevenueChart />
+          <ExpensesChart />
+        </div>
 
-      <Card className="shadow-card">
-        <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-6">Transações Recentes</h3>
-          
-          <div className="rounded-lg border border-border overflow-hidden">
+        <Card className="shadow-card">
+          <div className="p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-6">Transações Recentes</h3>
+            
+            <div className="mb-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input 
+                  placeholder="Buscar por descrição, tipo..." 
+                  className="pl-10"
+                />
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-border overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50">
@@ -82,6 +127,7 @@ const Financeiro = () => {
                   <TableHead className="font-semibold">Descrição</TableHead>
                   <TableHead className="font-semibold">Tipo</TableHead>
                   <TableHead className="font-semibold text-right">Valor</TableHead>
+                  <TableHead className="font-semibold">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -101,13 +147,23 @@ const Financeiro = () => {
                     }`}>
                       {row.valor}
                     </TableCell>
+                    <TableCell>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleVerDetalhes(row.descricao)}
+                      >
+                        Ver Detalhes
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </PageLayout>
   );
 };
