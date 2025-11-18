@@ -33,10 +33,19 @@ const Sinistros = () => {
     });
   };
 
+  const handleImportData = (data: any[]) => {
+    console.log("Dados de sinistros importados:", data);
+    toast({
+      title: "Importação concluída",
+      description: `${data.length} sinistro(s) importado(s) com sucesso`,
+    });
+  };
+
   return (
     <PageLayout
       title="Sinistros"
       description="Gestão de sinistros e ocorrências"
+      onImportData={handleImportData}
     >
       <div className="flex justify-end mb-6">
         <Button onClick={handleNewSinistro} className="gap-2">

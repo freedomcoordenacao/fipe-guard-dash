@@ -32,10 +32,19 @@ const Associados = () => {
     });
   };
 
+  const handleImportData = (data: any[]) => {
+    console.log("Dados de associados importados:", data);
+    toast({
+      title: "Importação concluída",
+      description: `${data.length} associado(s) importado(s) com sucesso`,
+    });
+  };
+
   return (
     <PageLayout
       title="Associados"
       description="Gestão completa de associados"
+      onImportData={handleImportData}
     >
       <div className="space-y-6">
         <div className="flex justify-end">
