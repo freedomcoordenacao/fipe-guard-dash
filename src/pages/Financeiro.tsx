@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DollarSign, TrendingUp, TrendingDown, CreditCard } from "lucide-react";
 import RevenueChart from "@/components/RevenueChart";
 import ExpensesChart from "@/components/ExpensesChart";
+import { useToast } from "@/hooks/use-toast";
 
 const transactionsData = [
   { data: "15/06/2024", descricao: "Mensalidade - João Silva", tipo: "Receita", valor: "R$ 250,00" },
@@ -14,10 +15,21 @@ const transactionsData = [
 ];
 
 const Financeiro = () => {
+  const { toast } = useToast();
+
+  const handleImportData = (data: any[]) => {
+    console.log("Dados financeiros importados:", data);
+    toast({
+      title: "Importação concluída",
+      description: `${data.length} transação(ões) importada(s) com sucesso`,
+    });
+  };
+
   return (
     <PageLayout
       title="Financeiro"
       description="Gestão financeira e fluxo de caixa"
+      onImportData={handleImportData}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <KPICard

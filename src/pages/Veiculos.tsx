@@ -33,10 +33,19 @@ const Veiculos = () => {
     });
   };
 
+  const handleImportData = (data: any[]) => {
+    console.log("Dados de veículos importados:", data);
+    toast({
+      title: "Importação concluída",
+      description: `${data.length} veículo(s) importado(s) com sucesso`,
+    });
+  };
+
   return (
     <PageLayout
       title="Veículos"
       description="Gestão de veículos protegidos"
+      onImportData={handleImportData}
     >
       <div className="space-y-6">
         <div className="flex justify-end">

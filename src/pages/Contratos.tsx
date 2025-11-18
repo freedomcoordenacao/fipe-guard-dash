@@ -33,10 +33,19 @@ const Contratos = () => {
     });
   };
 
+  const handleImportData = (data: any[]) => {
+    console.log("Dados de contratos importados:", data);
+    toast({
+      title: "Importação concluída",
+      description: `${data.length} contrato(s) importado(s) com sucesso`,
+    });
+  };
+
   return (
     <PageLayout
       title="Contratos"
       description="Gestão de contratos de proteção"
+      onImportData={handleImportData}
     >
       <div className="space-y-6">
         <div className="flex justify-end">
