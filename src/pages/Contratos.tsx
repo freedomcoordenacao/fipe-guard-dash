@@ -9,6 +9,8 @@ import KPICard from "@/components/KPICard";
 import ContractsChart from "@/components/ContractsChart";
 import ContratosStatusChart from "@/components/ContratosStatusChart";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import ContratoFormDialog from "@/components/ContratoFormDialog";
 
 const sampleData = [
   { numero: "CT-2024-001", associado: "João Silva", veiculo: "Honda Civic 2020", valor: "R$ 250,00", status: "Ativo", vencimento: "15/07/2024" },
@@ -18,11 +20,13 @@ const sampleData = [
 
 const Contratos = () => {
   const { toast } = useToast();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleNovoContrato = () => {
+  const handleNovoContrato = (data: any) => {
+    console.log("Novo contrato:", data);
     toast({
-      title: "Novo Contrato",
-      description: "Funcionalidade de cadastro será implementada",
+      title: "Contrato cadastrado",
+      description: "Contrato cadastrado com sucesso",
     });
   };
 
@@ -49,11 +53,17 @@ const Contratos = () => {
     >
       <div className="space-y-6">
         <div className="flex justify-end">
-          <Button onClick={handleNovoContrato} className="gap-2">
+          <Button onClick={() => setDialogOpen(true)} className="gap-2">
             <Plus className="w-4 h-4" />
             Novo Contrato
           </Button>
         </div>
+        
+        <ContratoFormDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onSubmit={handleNovoContrato}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <KPICard
