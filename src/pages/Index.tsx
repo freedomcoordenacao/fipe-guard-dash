@@ -7,8 +7,11 @@ import AssociadosChart from "@/components/AssociadosChart";
 import VeiculosProtegidosChart from "@/components/VeiculosProtegidosChart";
 import ContratosStatusChart from "@/components/ContratosStatusChart";
 import SinistrosStatusChart from "@/components/SinistrosStatusChart";
-import { Users, Car, FileText, AlertCircle, Database, Tag, CheckCircle } from "lucide-react";
-import { parseFipeData, calculateFipeStats, formatNumber, FipeStats } from "@/utils/fipeDataProcessor";
+import ImportExcelDialog from "@/components/ImportExcelDialog";
+import { Button } from "@/components/ui/button";
+import { Users, Car, FileText, AlertCircle, Database, Tag, CheckCircle, Upload } from "lucide-react";
+import { parseFipeData, calculateFipeStats, formatNumber, FipeStats, FipeVehicle } from "@/utils/fipeDataProcessor";
+import { toast } from "sonner";
 
 const Index = () => {
   const [fipeStats, setFipeStats] = useState<FipeStats>({
@@ -17,6 +20,7 @@ const Index = () => {
     veiculosAceitos: 0,
     percentualAceitos: 0
   });
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
 
   useEffect(() => {
     // Load and process FIPE data
@@ -29,11 +33,56 @@ const Index = () => {
       })
       .catch(err => console.error('Error loading FIPE data:', err));
   }, []);
+
+  const handleImportFipeData = (data: any[]) => {
+    try {
+      // Map Excel data to FipeVehicle format
+      const vehicles: FipeVehicle[] = data.map(row => ({
+        codigoTabelaReferencia: row.codigoTabelaReferencia || '',
+        codigoTipoVeiculo: row.codigoTipoVeiculo || '',
+        TipoVeiculo: row.TipoVeiculo || '',
+        codigoMarca: row.codigoMarca || '',
+        Marca: row.Marca || '',
+        codigoModelo: row.codigoModelo || '',
+        Modelo: row.Modelo || '',
+        AnoModelo: row.AnoModelo || '',
+        Combustivel: row.Combustivel || '',
+        CodigoFipe: row.CodigoFipe || '',
+        Valor: row.Valor || '',
+        Aceito: row['Aceito?'] || row.Aceito || '',
+        RB: row.RB || '',
+        ValeParaPerdaTotal: row['Vale para perda total'] || row.ValeParaPerdaTotal || '',
+        ValePraQualquerBatida: row['Vale pra qualquer batida'] || row.ValePraQualquerBatida || '',
+        ValorDaFranquia: row['Valor da Franquia:'] || row.ValorDaFranquia || '',
+        DanosMateriais: row['Danos materiais a terceiros: 100k'] || row.DanosMateriais || '',
+        ValorProtecao: row['Valor Proteção'] || row.ValorProtecao || '',
+        UF: row.UF || '',
+        MES: row['MÊS'] || row.MES || ''
+      }));
+
+      const stats = calculateFipeStats(vehicles);
+      setFipeStats(stats);
+      setIsImportDialogOpen(false);
+      toast.success(`Dados FIPE importados com sucesso! ${formatNumber(stats.totalVeiculos)} veículos processados.`);
+    } catch (error) {
+      console.error('Error importing FIPE data:', error);
+      toast.error('Erro ao importar dados FIPE. Verifique o formato do arquivo.');
+    }
+  };
   return (
     <main className="container mx-auto px-6 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
-            <p className="text-muted-foreground">Visão geral da sua operação de proteção veicular</p>
+          <div className="mb-8 flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
+              <p className="text-muted-foreground">Visão geral da sua operação de proteção veicular</p>
+            </div>
+            <Button 
+              onClick={() => setIsImportDialogOpen(true)}
+              className="gap-2"
+            >
+              <Upload className="w-4 h-4" />
+              Importar Dados FIPE
+            </Button>
           </div>
 
           {/* KPI Cards */}
@@ -119,6 +168,14 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <SinistrosStatusChart />
           </div>
+
+          <ImportExcelDialog
+            open={isImportDialogOpen}
+            onOpenChange={setIsImportDialogOpen}
+            onImport={handleImportFipeData}
+            title="Importar Dados da Tabela FIPE"
+            description="Selecione um arquivo Excel (.xlsx) ou CSV com os dados da Tabela FIPE. As colunas esperadas são: Modelo, Marca, Aceito?, etc."
+          />
     </main>
   );
 };
