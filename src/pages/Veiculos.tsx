@@ -21,6 +21,7 @@ const sampleData = [
 const Veiculos = () => {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleNovoVeiculo = (data: any) => {
     console.log("Novo veículo:", data);
@@ -103,6 +104,8 @@ const Veiculos = () => {
                 <Input 
                   placeholder="Buscar por placa, marca, modelo..." 
                   className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
@@ -122,7 +125,18 @@ const Veiculos = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sampleData.map((row) => (
+                  {sampleData
+                    .filter((row) => {
+                      const search = searchTerm.toLowerCase();
+                      return (
+                        row.placa.toLowerCase().includes(search) ||
+                        row.marca.toLowerCase().includes(search) ||
+                        row.modelo.toLowerCase().includes(search) ||
+                        row.associado.toLowerCase().includes(search) ||
+                        row.status.toLowerCase().includes(search)
+                      );
+                    })
+                    .map((row) => (
                     <TableRow key={row.placa} className="hover:bg-muted/30 transition-colors">
                       <TableCell className="font-medium">{row.placa}</TableCell>
                       <TableCell>{row.marca}</TableCell>

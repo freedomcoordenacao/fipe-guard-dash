@@ -22,6 +22,7 @@ const transactionsData = [
 const Financeiro = () => {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleNovaTransacao = (data: any) => {
     console.log("Nova transação:", data);
@@ -115,6 +116,8 @@ const Financeiro = () => {
                 <Input 
                   placeholder="Buscar por descrição, tipo..." 
                   className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
@@ -131,7 +134,15 @@ const Financeiro = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {transactionsData.map((row, index) => (
+                {transactionsData
+                  .filter((row) => {
+                    const search = searchTerm.toLowerCase();
+                    return (
+                      row.descricao.toLowerCase().includes(search) ||
+                      row.tipo.toLowerCase().includes(search)
+                    );
+                  })
+                  .map((row, index) => (
                   <TableRow key={index} className="hover:bg-muted/30 transition-colors">
                     <TableCell className="font-medium">{row.data}</TableCell>
                     <TableCell>{row.descricao}</TableCell>
