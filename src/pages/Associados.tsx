@@ -20,6 +20,7 @@ const sampleData = [
 const Associados = () => {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleNovoAssociado = (data: any) => {
     console.log("Novo associado:", data);
@@ -104,6 +105,8 @@ const Associados = () => {
                 <Input 
                   placeholder="Buscar associado por nome, CPF..." 
                   className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
@@ -123,7 +126,17 @@ const Associados = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sampleData.map((row) => (
+                {sampleData
+                  .filter((row) => {
+                    const search = searchTerm.toLowerCase();
+                    return (
+                      row.nome.toLowerCase().includes(search) ||
+                      row.cpf.includes(search) ||
+                      row.email.toLowerCase().includes(search) ||
+                      row.status.toLowerCase().includes(search)
+                    );
+                  })
+                  .map((row) => (
                   <TableRow key={row.id} className="hover:bg-muted/30 transition-colors">
                     <TableCell className="font-medium">{row.id}</TableCell>
                     <TableCell>{row.nome}</TableCell>

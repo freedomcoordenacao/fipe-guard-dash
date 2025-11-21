@@ -21,6 +21,7 @@ const sampleData = [
 const Sinistros = () => {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleNewSinistro = (data: any) => {
     console.log("Novo sinistro:", data);
@@ -107,6 +108,8 @@ const Sinistros = () => {
               <Input 
                 placeholder="Buscar por número, associado, tipo..." 
                 className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
@@ -126,7 +129,18 @@ const Sinistros = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sampleData.map((row) => (
+                {sampleData
+                  .filter((row) => {
+                    const search = searchTerm.toLowerCase();
+                    return (
+                      row.numero.toLowerCase().includes(search) ||
+                      row.associado.toLowerCase().includes(search) ||
+                      row.veiculo.toLowerCase().includes(search) ||
+                      row.tipo.toLowerCase().includes(search) ||
+                      row.status.toLowerCase().includes(search)
+                    );
+                  })
+                  .map((row) => (
                   <TableRow key={row.numero} className="hover:bg-muted/30 transition-colors">
                     <TableCell className="font-medium">{row.numero}</TableCell>
                     <TableCell>{row.associado}</TableCell>
