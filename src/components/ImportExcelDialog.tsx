@@ -11,12 +11,14 @@ interface ImportExcelDialogProps {
   onImport: (data: any[]) => void;
   title: string;
   description: string;
+  requiredColumns?: string[];
 }
 
-const ImportExcelDialog = ({ open, onOpenChange, onImport, title, description }: ImportExcelDialogProps) => {
+const ImportExcelDialog = ({ open, onOpenChange, onImport, title, description, requiredColumns = [] }: ImportExcelDialogProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [previewData, setPreviewData] = useState<any[]>([]);
+  const [missingColumns, setMissingColumns] = useState<string[]>([]);
   const { toast } = useToast();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,6 +38,14 @@ const ImportExcelDialog = ({ open, onOpenChange, onImport, title, description }:
     }
   };
 
+  const validateColumns = (data: any[]): string[] => {
+    if (requiredColumns.length === 0 || data.length === 0) return [];
+    
+    const fileColumns = Object.keys(data[0]);
+    const missing = requiredColumns.filter(col => !fileColumns.includes(col));
+    return missing;
+  };
+
   const processFile = async (file: File) => {
     setIsProcessing(true);
     try {
@@ -44,6 +54,18 @@ const ImportExcelDialog = ({ open, onOpenChange, onImport, title, description }:
       const firstSheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheetName];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
+      
+      // Validate required columns
+      const missing = validateColumns(jsonData);
+      setMissingColumns(missing);
+      
+      if (missing.length > 0) {
+        toast({
+          title: "Colunas obrigatórias ausentes",
+          description: `As seguintes colunas estão faltando: ${missing.join(', ')}`,
+          variant: "destructive",
+        });
+      }
       
       setPreviewData(jsonData.slice(0, 5)); // Show first 5 rows as preview
       setIsProcessing(false);
@@ -60,6 +82,16 @@ const ImportExcelDialog = ({ open, onOpenChange, onImport, title, description }:
 
   const handleImport = async () => {
     if (!file) return;
+    
+    // Block import if required columns are missing
+    if (missingColumns.length > 0) {
+      toast({
+        title: "Não é possível importar",
+        description: `Colunas obrigatórias faltando: ${missingColumns.join(', ')}`,
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsProcessing(true);
     try {
@@ -78,6 +110,7 @@ const ImportExcelDialog = ({ open, onOpenChange, onImport, title, description }:
       
       setFile(null);
       setPreviewData([]);
+      setMissingColumns([]);
       onOpenChange(false);
     } catch (error) {
       toast({
@@ -93,6 +126,7 @@ const ImportExcelDialog = ({ open, onOpenChange, onImport, title, description }:
   const handleClose = () => {
     setFile(null);
     setPreviewData([]);
+    setMissingColumns([]);
     onOpenChange(false);
   };
 
@@ -128,6 +162,18 @@ const ImportExcelDialog = ({ open, onOpenChange, onImport, title, description }:
             <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
               <CheckCircle className="w-5 h-5 text-success" />
               <span className="text-sm font-medium">{file.name}</span>
+            </div>
+          )}
+
+          {missingColumns.length > 0 && (
+            <div className="flex items-start gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-destructive">Colunas obrigatórias ausentes</p>
+                <p className="text-xs text-destructive/80 mt-1">
+                  {missingColumns.join(', ')}
+                </p>
+              </div>
             </div>
           )}
 
@@ -167,7 +213,7 @@ const ImportExcelDialog = ({ open, onOpenChange, onImport, title, description }:
             </Button>
             <Button 
               onClick={handleImport} 
-              disabled={!file || isProcessing}
+              disabled={!file || isProcessing || missingColumns.length > 0}
               className="gap-2"
             >
               <Upload className="w-4 h-4" />

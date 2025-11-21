@@ -174,7 +174,8 @@ const Index = () => {
             onOpenChange={setIsImportDialogOpen}
             onImport={handleImportFipeData}
             title="Importar Dados da Tabela FIPE"
-            description="Selecione um arquivo Excel (.xlsx) ou CSV com os dados da Tabela FIPE. As colunas esperadas são: Modelo, Marca, Aceito?, etc."
+            description="Selecione um arquivo Excel (.xlsx) ou CSV com os dados da Tabela FIPE. As colunas obrigatórias são: Modelo, Marca e Aceito?"
+            requiredColumns={['Modelo', 'Marca', 'Aceito?']}
           />
     </main>
   );
