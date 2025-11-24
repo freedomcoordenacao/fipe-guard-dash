@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PageLayout from "@/components/PageLayout";
 import RankingFunnel from "@/components/RankingFunnel";
 import {
@@ -6,6 +7,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Mock data for rankings - replace with real data later
 const mockRankingData = (names: string[]) => 
@@ -23,6 +31,29 @@ const veiculosPopulares = [
 ];
 
 const Ranking = () => {
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState<string>(currentYear.toString());
+  const [selectedMonth, setSelectedMonth] = useState<string>("all");
+
+  // Generate years from 2015 to current year
+  const years = Array.from({ length: currentYear - 2014 }, (_, i) => (2015 + i).toString());
+  
+  const months = [
+    { value: "all", label: "Todos os meses" },
+    { value: "1", label: "Janeiro" },
+    { value: "2", label: "Fevereiro" },
+    { value: "3", label: "Março" },
+    { value: "4", label: "Abril" },
+    { value: "5", label: "Maio" },
+    { value: "6", label: "Junho" },
+    { value: "7", label: "Julho" },
+    { value: "8", label: "Agosto" },
+    { value: "9", label: "Setembro" },
+    { value: "10", label: "Outubro" },
+    { value: "11", label: "Novembro" },
+    { value: "12", label: "Dezembro" },
+  ];
+
   return (
     <PageLayout
       title="Rankings"
@@ -34,7 +65,47 @@ const Ranking = () => {
             <AccordionTrigger className="px-6 hover:no-underline">
               <span className="text-lg font-semibold">Veículos mais vendidos no Brasil</span>
             </AccordionTrigger>
-            <AccordionContent className="px-6 pb-6">
+            <AccordionContent className="px-6 pb-6 space-y-4">
+              <div className="flex gap-4 items-end">
+                <div className="flex-1">
+                  <label className="text-sm font-medium text-foreground mb-2 block">
+                    Ano
+                  </label>
+                  <Select value={selectedYear} onValueChange={setSelectedYear}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Selecione o ano" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {years.map((year) => (
+                        <SelectItem key={year} value={year}>
+                          {year}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                {selectedYear === currentYear.toString() && (
+                  <div className="flex-1">
+                    <label className="text-sm font-medium text-foreground mb-2 block">
+                      Mês
+                    </label>
+                    <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Selecione o mês" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {months.map((month) => (
+                          <SelectItem key={month.value} value={month.value}>
+                            {month.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+              </div>
+
               <RankingFunnel 
                 data={mockRankingData(veiculosPopulares)}
                 title="Top 10 Veículos Mais Vendidos no Brasil"
