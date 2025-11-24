@@ -1,9 +1,10 @@
-import { BarChart3, Users, Car, FileText, AlertCircle, DollarSign, Settings } from "lucide-react";
+import { BarChart3, Users, Car, FileText, AlertCircle, DollarSign, Settings, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
 const mainMenuItems = [
   { icon: BarChart3, label: "Dashboard", path: "/" },
+  { icon: TrendingUp, label: "Ranking", path: "/ranking" },
   { icon: Users, label: "Associados", path: "/associados" },
   { icon: Car, label: "Veículos", path: "/veiculos" },
   { icon: FileText, label: "Contratos", path: "/contratos" },
