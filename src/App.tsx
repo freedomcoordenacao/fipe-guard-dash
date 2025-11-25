@@ -10,6 +10,7 @@ import Veiculos from "./pages/Veiculos";
 import Contratos from "./pages/Contratos";
 import Sinistros from "./pages/Sinistros";
 import Financeiro from "./pages/Financeiro";
+import Fipe from "./pages/Fipe";
 import Configuracoes from "./pages/Configuracoes";
 import NotFound from "./pages/NotFound";
 import DashboardSidebar from "./components/DashboardSidebar";
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/contratos" element={<Contratos />} />
               <Route path="/sinistros" element={<Sinistros />} />
               <Route path="/financeiro" element={<Financeiro />} />
+              <Route path="/fipe" element={<Fipe />} />
               <Route path="/configuracoes" element={<Configuracoes />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

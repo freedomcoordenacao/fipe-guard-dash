@@ -1,4 +1,4 @@
-import { BarChart3, Users, Car, FileText, AlertCircle, DollarSign, Settings, TrendingUp } from "lucide-react";
+import { BarChart3, Users, Car, FileText, AlertCircle, DollarSign, Settings, TrendingUp, Database } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
@@ -10,6 +10,7 @@ const mainMenuItems = [
   { icon: FileText, label: "Contratos", path: "/contratos" },
   { icon: AlertCircle, label: "Sinistros", path: "/sinistros" },
   { icon: DollarSign, label: "Financeiro", path: "/financeiro" },
+  { icon: Database, label: "FIPE", path: "/fipe" },
 ];
 
 const systemMenuItems = [
