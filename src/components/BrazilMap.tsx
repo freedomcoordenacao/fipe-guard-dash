@@ -48,42 +48,42 @@ const BrazilMap = ({ selectedState, onStateSelect }: BrazilMapProps) => {
     return brazilStates.find(s => s.id === id)?.name || id;
   };
 
-  // Region groupings with colors
+  // Region groupings using company color palette
   const regions = [
     { 
       name: "Norte", 
       states: ["AC", "AM", "AP", "PA", "RO", "RR", "TO"],
-      bgColor: "bg-emerald-500/20 hover:bg-emerald-500/40",
-      activeColor: "bg-emerald-500 text-white",
-      textColor: "text-emerald-700 dark:text-emerald-300"
+      bgColor: "bg-primary/20 hover:bg-primary/40",
+      activeColor: "bg-primary text-primary-foreground",
+      textColor: "text-primary"
     },
     { 
       name: "Nordeste", 
       states: ["AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"],
-      bgColor: "bg-amber-500/20 hover:bg-amber-500/40",
-      activeColor: "bg-amber-500 text-white",
-      textColor: "text-amber-700 dark:text-amber-300"
+      bgColor: "bg-accent/20 hover:bg-accent/40",
+      activeColor: "bg-accent text-accent-foreground",
+      textColor: "text-accent"
     },
     { 
       name: "Centro-Oeste", 
       states: ["DF", "GO", "MS", "MT"],
-      bgColor: "bg-rose-500/20 hover:bg-rose-500/40",
-      activeColor: "bg-rose-500 text-white",
-      textColor: "text-rose-700 dark:text-rose-300"
+      bgColor: "bg-warning/20 hover:bg-warning/40",
+      activeColor: "bg-warning text-foreground",
+      textColor: "text-warning"
     },
     { 
       name: "Sudeste", 
       states: ["ES", "MG", "RJ", "SP"],
-      bgColor: "bg-blue-500/20 hover:bg-blue-500/40",
-      activeColor: "bg-blue-500 text-white",
-      textColor: "text-blue-700 dark:text-blue-300"
+      bgColor: "bg-secondary/30 hover:bg-secondary/50",
+      activeColor: "bg-secondary text-secondary-foreground",
+      textColor: "text-secondary"
     },
     { 
       name: "Sul", 
       states: ["PR", "RS", "SC"],
-      bgColor: "bg-violet-500/20 hover:bg-violet-500/40",
-      activeColor: "bg-violet-500 text-white",
-      textColor: "text-violet-700 dark:text-violet-300"
+      bgColor: "bg-chart-5/20 hover:bg-chart-5/40",
+      activeColor: "bg-chart-5 text-primary-foreground",
+      textColor: "text-chart-5"
     }
   ];
 
